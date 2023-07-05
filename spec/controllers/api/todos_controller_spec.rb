@@ -13,4 +13,29 @@ RSpec.describe Api::TodosController, type: :controller do
             expect(json_response.first['status']).to eq 0
         end
     end
+
+    describe 'Create' do
+        let(:task) { 'Create todo' }
+        let(:description) { 'Maybe it will work' }
+
+        it 'creates a todo' do
+            expect{
+                post :create, params: { task: 'Create todo', description: 'Maybe it will work' }
+            }.to change(Todo, :count).by(1)
+
+            json_response = JSON.parse(response.body)
+            expect(json_response['task']).to eq task
+            expect(json_response['description']).to eq description
+        end
+    end
+
+    describe 'Destroy' do
+        let!(:todo) { create(:todo) }
+
+        it 'deletes a todo' do 
+            expect{ delete :destroy, params: { id: todo.id } }.to change(Todo, :count).by(-1)
+
+            expect(Todo.all).not_to include(todo)
+        end
+    end
 end
