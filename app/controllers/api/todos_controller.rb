@@ -1,3 +1,5 @@
+require File.join(Rails.root, "services", "random_task.rb")
+
 class Api::TodosController < ApplicationController
   def index
     @todos = Todo.all
@@ -16,6 +18,10 @@ class Api::TodosController < ApplicationController
 
   def destroy
     render json: {message: 'ToDo deleted!'} if Todo.find(params[:id])&.destroy
+  end
+
+  def random_task
+    render json: RandomTask.generate
   end
 
   private
