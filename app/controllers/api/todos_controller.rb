@@ -15,6 +15,7 @@ class Api::TodosController < ApplicationController
   end
 
   def destroy
+    render json: {message: 'ToDo deleted!'} if Todo.find(params[:id])&.destroy
   end
 
   private
